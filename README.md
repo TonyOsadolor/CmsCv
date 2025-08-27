@@ -1,15 +1,17 @@
-<p align="center"><a href="https://osadolor.tinnovations.com.ng" target="_blank"><img src="https://osadolor.tinnovations.com.ng/img/relicon.jpg" width="200" height="auto"></a></p>
+<p align="center"><a href="https://osadolor.tinnovations.com.ng" target="_blank"><img src="https://osadolor.tinnovations.com.ng/img/relicon.jpg" width="200" height="auto" oncontextmenu="return false;" draggable="false"></a></p>
 
 ## IGHIWIYISI, Anthony Osadolor
 
-Dedicated, Patient and Focused, young adventurous Programmer, 
-ready to touch the world. Believe the little act of kindness 
-builds the most valued relationship. Simplicity is the Key to a 
-Happy Life..
+A repository to version control my professional curriculum vitae, 
+built with [Laravel, Tailwind, Flux, and little Flowbite, Filament], 
+it contains a timeline of my skills, projects, and career journey. 
+The latest version is automatically deployed 
+[https://osadolor.tinnovations.com.ng]!
 
 ### Stacks
 
 - **Backend : PHP / Laravel**
+- **Admin Dashboard : Filament 4.x**
 - **Frontend : Livewire Starter Kit - Blade, Tailwind CSS, Flux UI & Flowbite**
 
 ## Setup Guide
@@ -43,6 +45,9 @@ Now, follow this steps:
     <li>Open the Address in your native browser and signup, voula... you can start using the WebApp.</li>
 </ol>
 
+
+## Theme Credit
+Designed by <code><a href="https://htmlcodex.com">HTML Codex</a></code></p>
 
 ## Code of Conduct
 In order to ensure that the Project is used for it rightful existence, please review and abide by the Code of Conduct.

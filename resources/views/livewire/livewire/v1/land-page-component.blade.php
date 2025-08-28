@@ -10,7 +10,7 @@
                             src="{{ url('public/'.$aboutMe->photo) }}" 
                             oncontextmenu="return false;" draggable="false" 
                             alt="{{ optional($aboutMe)->othernames }}"
-                            style="max-height: 400px;">
+                            style="max-height: 350px;">
                         <h1 class="text-primary mt-2">{{ optional($aboutMe)->othernames }}</h1>
                         <div class="mb-4" style="height: 22px;">
                             <h4 class="typed-text-output d-inline-block text-light"></h4>
@@ -114,84 +114,41 @@
                     <!-- Skills Start -->
                     <section class="py-5 border-bottom wow fadeInUp" data-wow-delay="0.1s">
                         <h1 class="title pb-3 mb-5">Skills</h1>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="skill mb-4">
-                                    <div class="d-flex justify-content-between">
-                                        <p class="mb-2">HTML</p>
-                                        <p class="mb-2">90%</p>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
+                        @if(isset($skills) && count($skills) > 0)
+                        @php $chunks = $skills->chunk(4); @endphp
+                            <div class="row">
+                                <div class="col-sm-6">
+                                @if (isset($chunks[0]))
+                                    @foreach($chunks[0] as $skill)
+                                        <div class="skill mb-4">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-2">{{ $skill->name }}</p>
+                                                <p class="mb-2">{{ $skill->expertise }}%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="{{ $skill->expertise }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
                                 </div>
-                                <div class="skill mb-4">
-                                    <div class="d-flex justify-content-between">
-                                        <p class="mb-2">CSS</p>
-                                        <p class="mb-2">75%</p>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                                <div class="skill mb-4">
-                                    <div class="d-flex justify-content-between">
-                                        <p class="mb-2">PHP</p>
-                                        <p class="mb-2">80%</p>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                                <div class="skill mb-4">
-                                    <div class="d-flex justify-content-between">
-                                        <p class="mb-2">Adobe Photoshop</p>
-                                        <p class="mb-2">50%</p>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
+                                <div class="col-sm-6">
+                                @if (isset($chunks[1]))
+                                    @foreach($chunks[1] as $skill)
+                                        <div class="skill mb-4">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-2">{{ $skill->name }}</p>
+                                                <p class="mb-2">{{ $skill->expertise }}%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="{{ $skill->expertise }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="skill mb-4">
-                                    <div class="d-flex justify-content-between">
-                                        <p class="mb-2">Laravel</p>
-                                        <p class="mb-2">85%</p>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                                <div class="skill mb-4">
-                                    <div class="d-flex justify-content-between">
-                                        <p class="mb-2">Microsoft Office Suit</p>
-                                        <p class="mb-2">99%</p>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-success" role="progressbar" aria-valuenow="99" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                                <div class="skill mb-4">
-                                    <div class="d-flex justify-content-between">
-                                        <p class="mb-2">Corel Draw</p>
-                                        <p class="mb-2">75%</p>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                                <div class="skill mb-4">
-                                    <div class="d-flex justify-content-between">
-                                        <p class="mb-2">JavaScript</p>
-                                        <p class="mb-2">55%</p>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @endif
                     </section>
                     <!-- Skills End -->
 

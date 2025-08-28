@@ -3,6 +3,7 @@
 namespace App\Livewire\Livewire\V1;
 
 use App\Models\User;
+use App\Models\Skill;
 use App\Models\Social;
 use Livewire\Component;
 use App\Models\SideTag;
@@ -87,11 +88,11 @@ class LandPageComponent extends Component
 
         return view('livewire.livewire.v1.land-page-component')->with([
             'aboutMe' => $aboutMe,
-            'experiences' => Experience::where('about_me_id', $aboutMe->id)->get(),
-            'educations' => Education::where('about_me_id', $aboutMe->id)->get(),
-            'services' => Service::where('about_me_id', $aboutMe->id)->get(),
-            // 'skills' => Skill::where('about_me_id', $aboutMe->id)->get(),
-            'socials' => Social::where('about_me_id', $aboutMe->id)->get(),
+            'experiences' => Experience::active()->where('about_me_id', $aboutMe->id)->get(),
+            'educations' => Education::active()->where('about_me_id', $aboutMe->id)->get(),
+            'services' => Service::active()->where('about_me_id', $aboutMe->id)->get(),
+            'skills' => Skill::active()->where('about_me_id', $aboutMe->id)->get(),
+            'socials' => Social::active()->where('about_me_id', $aboutMe->id)->get(),
             'testimonials' => $testimonials,
             'sideTags' => $sideTags,
             'yearOfExperience' => $aboutMe->experience ?? 4,

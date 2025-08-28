@@ -1,47 +1,50 @@
 <?php
 
-namespace App\Filament\Resources\Testimonials;
+namespace App\Filament\Resources\SideTags;
 
-use App\Filament\Resources\Testimonials\Pages\ManageTestimonials;
+use App\Filament\Resources\SideTags\Pages\ManageSideTags;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Tables\Filters\TrashedFilter;
-use Filament\Tables\Columns\ToggleColumn;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Tables\Columns\ImageColumn;
-use Filament\Actions\ForceDeleteAction;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Actions\RestoreBulkAction;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\RestoreBulkAction;
+use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Forms\Components\Toggle;
 use Filament\Actions\BulkActionGroup;
 use Filament\Support\Icons\Heroicon;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use App\Models\Testimonial;
 use Filament\Tables\Table;
+use App\Models\SideTag;
 use BackedEnum;
-use Filament\Schemas\Components\Utilities\Get;
 
-class TestimonialResource extends Resource
+class SideTagResource extends Resource
 {
-    protected static ?string $model = Testimonial::class;
+    protected static ?string $model = SideTag::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::InformationCircle;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Tag;
 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
-                // 
+                TextInput::make('name')
+                    ->required(),
+                TextInput::make('description')
+                    ->default(null),
+                Toggle::make('is_active')
+                    ->required(),
             ]);
     }
 
@@ -49,26 +52,15 @@ class TestimonialResource extends Resource
     {
         return $schema
             ->components([
-                ImageEntry::make('photo')
-                    ->defaultImageUrl(function (Get $get) {
-                        $test = Testimonial::where('names', $get('names'))->first();
-                        return url($test->default_img);
-                    })
-                    ->columnSpanFull(),
-                TextEntry::make('names'),
-                TextEntry::make('occupation'),
-                TextEntry::make('phone'),
-                TextEntry::make('email')
-                    ->label('Email address'),
-                IconEntry::make('is_refree')
+                TextEntry::make('name'),
+                TextEntry::make('description'),
+                IconEntry::make('is_active')
                     ->boolean(),
-                IconEntry::make('publish')
-                    ->boolean(),
-                TextEntry::make('review')
-                    ->columnSpanFull(),
                 TextEntry::make('created_at')
                     ->dateTime(),
                 TextEntry::make('updated_at')
+                    ->dateTime(),
+                TextEntry::make('deleted_at')
                     ->dateTime(),
             ]);
     }
@@ -77,32 +69,13 @@ class TestimonialResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('names')
+                TextColumn::make('name')
                     ->searchable(),
-                TextColumn::make('occupation')
-                    ->searchable(),
-                TextColumn::make('phone')
-                    ->copyable()
-                    ->badge()
-                    ->copyMessage('Phone Number Copied')
-                    ->searchable(),
-                TextColumn::make('email')
-                    ->badge()
-                    ->copyable()
-                    ->copyMessage('Email Copied')
-                    ->label('Email address')
-                    ->searchable(),
-                ImageColumn::make('photo')
-                    ->defaultImageUrl(function (Model $model) {
-                        return url($model->default_img);
-                    }),
-                IconColumn::make('is_refree')
-                    ->boolean(),
-                ToggleColumn::make('publish')
-                    ->label('Published?')
+                TextColumn::make('description'),
+                ToggleColumn::make('is_active')
                     ->afterStateUpdated(function ($record) {
-                        $status = $record->publish === true ? 'published' : 'un-published';
-                        $msg = $record->names.'\'s' ." review was {$status} successfully!";
+                        $status = $record->is_active === true ? 'Activated' : 'Deactivated';
+                        $msg = $record->name ." {$status} successfully!";
                         Notification::make()->title($status.' successfully')
                             ->body($msg)
                             ->success()->send();
@@ -121,7 +94,7 @@ class TestimonialResource extends Resource
             ])
             ->recordActions([
                 ViewAction::make(),
-                // EditAction::make(),
+                EditAction::make(),
                 DeleteAction::make(),
                 ForceDeleteAction::make(),
                 RestoreAction::make(),
@@ -139,7 +112,7 @@ class TestimonialResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ManageTestimonials::route('/'),
+            'index' => ManageSideTags::route('/'),
         ];
     }
 

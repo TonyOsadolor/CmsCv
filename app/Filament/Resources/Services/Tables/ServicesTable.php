@@ -2,15 +2,17 @@
 
 namespace App\Filament\Resources\Services\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
+use Filament\Tables\Filters\TrashedFilter;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Notifications\Notification;
 use Filament\Actions\RestoreBulkAction;
-use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\TrashedFilter;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\ViewAction;
+use Filament\Actions\EditAction;
 use Filament\Tables\Table;
 
 class ServicesTable
@@ -25,8 +27,14 @@ class ServicesTable
                     ->searchable(),
                 TextColumn::make('icon')
                     ->searchable(),
-                IconColumn::make('is_active')
-                    ->boolean(),
+                ToggleColumn::make('is_active')
+                    ->afterStateUpdated(function ($record) {
+                        $status = $record->is_active === true ? 'Activated' : 'Deactivated';
+                        $msg = $record->name ." {$status} successfully!";
+                        Notification::make()->title($status.' successfully')
+                            ->body($msg)
+                            ->success()->send();
+                    }),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -49,6 +57,7 @@ class ServicesTable
                     ForceDeleteBulkAction::make(),
                     RestoreBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->recordUrl(null);
     }
 }

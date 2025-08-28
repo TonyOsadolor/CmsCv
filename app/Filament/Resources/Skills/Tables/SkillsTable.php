@@ -1,46 +1,34 @@
 <?php
 
-namespace App\Filament\Resources\Experiences\Tables;
+namespace App\Filament\Resources\Skills\Tables;
 
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Notifications\Notification;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\ViewAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Table;
 
-class ExperiencesTable
+class SkillsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('role')
+                TextColumn::make('name')
                     ->searchable(),
-                TextColumn::make('company')
-                    ->searchable()
-                    ->limit(20),
-                TextColumn::make('job_description')
-                    ->searchable()
-                    ->limit(20),
-                TextColumn::make('location')
-                    ->searchable(),
-                TextColumn::make('start_date')
-                    ->date(),
-                TextColumn::make('end_date')
-                    ->date(),
-                IconColumn::make('till_present')
-                    ->boolean(),
+                TextColumn::make('expertise')
+                    ->numeric(),
+                TextColumn::make('description'),
                 ToggleColumn::make('is_active')
                     ->afterStateUpdated(function ($record) {
                         $status = $record->is_active === true ? 'Activated' : 'Deactivated';
-                        $msg = $record->role ." {$status} successfully!";
+                        $msg = $record->name ." {$status} successfully!";
                         Notification::make()->title($status.' successfully')
                             ->body($msg)
                             ->success()->send();

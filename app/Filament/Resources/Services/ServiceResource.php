@@ -22,7 +22,7 @@ class ServiceResource extends Resource
 {
     protected static ?string $model = Service::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::WrenchScrewdriver;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Cog;
 
     public static function form(Schema $schema): Schema
     {

@@ -5,11 +5,16 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Notifications\Notifiable;
+use Filament\Models\Contracts\HasAvatar;
+use Filament\Models\Contracts\HasName;
 use Illuminate\Support\Str;
+use Filament\Panel;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail, FilamentUser, HasName, HasAvatar
 {
     use HasFactory, Notifiable, SoftDeletes;
 
@@ -19,6 +24,14 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $guarded = ['id'];
+
+    /**
+     * Grant access to Panel
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return true;
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -58,6 +71,24 @@ class User extends Authenticatable
     public function getFullNameAttribute()
     {
         return $this->first_name . ' ' . $this->last_name;
+    }
+
+    /**
+     * Get the full name of the user.
+     *
+     * @return string
+     */
+    public function getFilamentName(): string
+    {
+        return $this->getFullNameAttribute();
+    }
+
+    /**
+     * Get the User's Avatar
+     */
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->photo ? $this->photo : 'https://picsum.photos/200/200';
     }
 
     /**

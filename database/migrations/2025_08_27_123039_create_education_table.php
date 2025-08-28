@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('type');
             $table->string('degree_type');
             $table->string('institute');
-            $table->string('course');
+            $table->string('course')->nullable();
             $table->string('institute_town');
             $table->date('start_date');
             $table->date('end_date')->nullable();

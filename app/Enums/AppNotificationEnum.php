@@ -9,4 +9,5 @@ enum AppNotificationEnum: string
     case INFO = 'info';
     case WARNING = 'warning';
     case QUESTION = 'question';
+    case DANGER = 'danger';
 }

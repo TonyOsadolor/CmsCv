@@ -76,7 +76,14 @@ class LandPageComponent extends Component
         $user = User::first();
         $github = $this->getGithubPublicProfile();
         $aboutMe = AboutMe::where('user_id', $user->id)->first();
-        $sideTags = SideTag::where('about_me_id', $user->id)->pluck('name')->implode(', ');
+
+        if (!$aboutMe) {
+            return view('blank_page');
+        }
+
+        $sideTags = SideTag::where('about_me_id', $aboutMe->id)->pluck('name')->implode(', ');
+        $testimonials = Testimonial::where('about_me_id', $aboutMe->id)
+            ->where('publish', 1)->get();
 
         return view('livewire.livewire.v1.land-page-component')->with([
             'aboutMe' => $aboutMe,
@@ -85,7 +92,7 @@ class LandPageComponent extends Component
             'services' => Service::where('about_me_id', $aboutMe->id)->get(),
             // 'skills' => Skill::where('about_me_id', $aboutMe->id)->get(),
             'socials' => Social::where('about_me_id', $aboutMe->id)->get(),
-            'testimonials' => Testimonial::where('about_me_id', $aboutMe->id)->get(),
+            'testimonials' => $testimonials,
             'sideTags' => $sideTags,
             'yearOfExperience' => $aboutMe->experience ?? 4,
             'happyClients' => Testimonial::where('about_me_id', $aboutMe->id)->count(),

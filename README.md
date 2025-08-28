@@ -26,9 +26,9 @@ Before running this app locally make sure you have the following software instal
 </ul>
 Now, follow this steps:
 <ol>
-    <li>Go to https://github.com/TonyOsadolor/osadolorCV .</li>
-    <li>Open your terminal, navigate to your preferred folder and Run: <code>git clone https://github.com/TonyOsadolor/osadolorCV.git</code>.</li>
-    <li>Run <code>cd osadolorCV</code></li>
+    <li>Go to https://github.com/TonyOsadolor/CmsCv .</li>
+    <li>Open your terminal, navigate to your preferred folder and Run: <code>git clone https://github.com/TonyOsadolor/CmsCv.git</code>.</li>
+    <li>Run <code>cd CmsCv</code></li>
     <li>Run <code>composer install</code></li>
     <li>Run <code>npm install</code></li>
     <li>Run <code>npm run build</code></li>

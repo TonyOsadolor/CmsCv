@@ -6,7 +6,11 @@
             <div class="row g-5">
                 <div class="col-lg-4 sticky-lg-top vh-100">
                     <div class="d-flex flex-column h-100 text-center overflow-auto shadow">
-                        <img class="w-100 img-fluid mb-4" src="{{ url('/public/assets/img/tony_2024cv.jpg') }}" oncontextmenu="return false;" draggable="false" alt="{{ optional($aboutMe)->othernames }}">
+                        <img class="w-100 img-fluid mb-4" 
+                            src="{{ url('public/'.$aboutMe->photo) }}" 
+                            oncontextmenu="return false;" draggable="false" 
+                            alt="{{ optional($aboutMe)->othernames }}"
+                            style="max-height: 400px;">
                         <h1 class="text-primary mt-2">{{ optional($aboutMe)->othernames }}</h1>
                         <div class="mb-4" style="height: 22px;">
                             <h4 class="typed-text-output d-inline-block text-light"></h4>
@@ -44,7 +48,7 @@
                             </div>
                             <div class="col-sm-6 py-1">
                                 <span class="fw-medium text-primary">Degree:</span> 
-                                {{ optional($aboutMe)->degree ?? 'HND' }} ({{ optional($educations)->course ?? null }})
+                                {{ optional($aboutMe)->degree ?? 'HND' }} ({{ optional($educations)->first()->course ?? null }})
                             </div>
                             <div class="col-sm-6 py-1">
                                 <span class="fw-medium text-primary">Experience:</span> 
@@ -248,13 +252,13 @@
                                 <div class="position-relative mb-4">
                                     <span class="bi bi-arrow-right fs-4 text-light position-absolute" style="top: -5px; left: -50px;"></span>
                                     <h5 class="mb-1">
-                                        {{ $education->degree_type }} @if($education->type == 'tertiary') of {{ $education->course }} @endif
+                                        {{ $education->degree_type }}@if($education->type == 'tertiary') of {{ $education->course }} @endif
                                     </h5>
                                     <p class="mb-2"><i class="fas fa-university"></i> 
-                                        {{ $education->course }}, {{ $education->institute_town }} <b>|</b> 
+                                        {{ $education->institute }}, {{ $education->institute_town }} <b>|</b> 
                                         <small>{{ $education->start_date->format('Y') }} - {{ $education->end_date->format('Y') }}</small></p>
                                     <p>
-                                        <i class="fas fa-certificate"></i> Equivalent ({{ $education->equivalent }} of {{ $education->course }}).
+                                        <i class="fas fa-certificate"></i> Equivalent ({{ $education->equivalent }}@if($education->type == 'tertiary') of {{ $education->course }} @endif).
                                     </p>
                                 </div>
                             @endforeach

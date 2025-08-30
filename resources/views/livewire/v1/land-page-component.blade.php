@@ -1,7 +1,5 @@
 <div>
 
-        
-
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-4 sticky-lg-top vh-100">

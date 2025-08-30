@@ -161,5 +161,7 @@
 
         <!-- Template Javascript -->
         <script src="{{ asset('assets/js/main.js') }}"></script>
+        <!-- Additional Scripts-->
+        @stack('scripts')
     </body>
 </html>

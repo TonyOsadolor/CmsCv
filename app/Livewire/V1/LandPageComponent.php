@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Livewire\V1;
+namespace App\Livewire\V1;
 
 use App\Models\User;
 use App\Models\Skill;
@@ -13,7 +13,6 @@ use App\Models\Education;
 use App\Models\Experience;
 use App\Models\Testimonial;
 use App\Mail\ContactMeMail;
-use Livewire\Attributes\Validate;
 use App\Enums\AppNotificationEnum;
 use App\Traits\AppNotificationTrait;
 use Illuminate\Support\Facades\Http;
@@ -22,6 +21,7 @@ use Illuminate\Support\Facades\Mail;
 class LandPageComponent extends Component
 {
     use AppNotificationTrait;
+    
     /**
      * Submit Contact Me Form
      */
@@ -75,27 +75,27 @@ class LandPageComponent extends Component
     public function render()
     {
         $user = User::first();
-        $github = $this->getGithubPublicProfile();
         $aboutMe = AboutMe::where('user_id', $user->id)->first();
 
         if (!$aboutMe) {
             return view('blank_page');
         }
-
+        
+        $github = $this->getGithubPublicProfile();
         $sideTags = SideTag::where('about_me_id', $aboutMe->id)->pluck('name')->implode(', ');
         $testimonials = Testimonial::where('about_me_id', $aboutMe->id)
-            ->where('publish', 1)->get();
+            ->where('publish', 1)->orderBy('created_at', 'desc')->get();
 
-        return view('livewire.livewire.v1.land-page-component')->with([
+        return view('livewire.v1.land-page-component')->with([
             'aboutMe' => $aboutMe,
-            'experiences' => Experience::active()->where('about_me_id', $aboutMe->id)->get(),
-            'educations' => Education::active()->where('about_me_id', $aboutMe->id)->get(),
-            'services' => Service::active()->where('about_me_id', $aboutMe->id)->get(),
-            'skills' => Skill::active()->where('about_me_id', $aboutMe->id)->get(),
-            'socials' => Social::active()->where('about_me_id', $aboutMe->id)->get(),
+            'experiences' => Experience::active()->where('about_me_id', $aboutMe->id)->orderBy('created_at', 'desc')->get(),
+            'educations' => Education::active()->where('about_me_id', $aboutMe->id)->orderBy('created_at', 'desc')->get(),
+            'services' => Service::active()->where('about_me_id', $aboutMe->id)->orderBy('created_at', 'desc')->get(),
+            'skills' => Skill::active()->where('about_me_id', $aboutMe->id)->orderBy('created_at', 'desc')->get(),
+            'socials' => Social::active()->where('about_me_id', $aboutMe->id)->orderBy('created_at', 'desc')->get(),
             'testimonials' => $testimonials,
             'sideTags' => $sideTags,
-            'yearOfExperience' => $aboutMe->experience ?? 4,
+            'yearOfExperience' => $aboutMe->experience ?? null,
             'happyClients' => Testimonial::where('about_me_id', $aboutMe->id)->count(),
             'publicRepos' => isset($github['public_repos']) ? $github['public_repos'] : 38,
         ]);

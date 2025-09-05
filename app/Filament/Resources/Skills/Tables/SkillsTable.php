@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Skills\Tables;
 
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Tables\Filters\TrashedFilter;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Notifications\Notification;
 use Filament\Actions\RestoreBulkAction;
@@ -13,6 +14,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Table;
+use App\Models\Skill;
 
 class SkillsTable
 {
@@ -25,6 +27,36 @@ class SkillsTable
                 TextColumn::make('expertise')
                     ->numeric(),
                 TextColumn::make('description'),
+                SelectColumn::make('sort_order')
+                    ->native(false)
+                    ->options(function () {
+                        $existingOrders = Skill::whereNotNull('sort_order')
+                            ->orderBy('sort_order')->pluck('sort_order', 'sort_order')->toArray();
+                            
+                            $maxSortOrder = Skill::max('sort_order');
+                            $nextSortOrder = $maxSortOrder ? $maxSortOrder + 1 : 1;
+                            
+                            $options = $existingOrders;
+                            $options[$nextSortOrder] = $nextSortOrder;
+
+                            return $options;
+                    })
+                    ->optionsLoadingMessage('Loading Sorting...')
+                    ->noOptionsSearchResultsMessage('No sort order found!')
+                    ->rules(['required'])
+                    ->beforeStateUpdated(function ($record, $state) {
+                        if (!$state || $state == null) {
+                            Notification::make()->danger()
+                                ->title('Error!')
+                                ->body("Cannot remove sort for {$record->name}")->send();
+                            return;
+                        }
+                    })
+                    ->afterStateUpdated(function ($record) {
+                        Notification::make()->success()
+                            ->title('Sort Updated')
+                            ->body("{$record->name} Sorted Successfully")->send();
+                    }),
                 ToggleColumn::make('is_active')
                     ->afterStateUpdated(function ($record) {
                         $status = $record->is_active === true ? 'Activated' : 'Deactivated';

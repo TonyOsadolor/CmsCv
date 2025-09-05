@@ -23,6 +23,7 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->boolean('till_present')->default(false);
             $table->string('equivalent');
+            $table->integer('sort_order')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();

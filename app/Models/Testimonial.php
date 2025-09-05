@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\SortOrderTrait;
 
 class Testimonial extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, SortOrderTrait;
 
     /**
      * The attributes that are not mass assignable.

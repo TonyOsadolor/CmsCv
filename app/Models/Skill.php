@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\SortOrderTrait;
 
 class Skill extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, SortOrderTrait;
 
     /**
      * The attributes that are not mass assignable.

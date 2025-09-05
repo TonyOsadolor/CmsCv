@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Education\Tables;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Tables\Filters\TrashedFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Notifications\Notification;
 use Filament\Actions\RestoreBulkAction;
@@ -15,6 +16,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\ViewAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Table;
+use App\Models\Education;
 
 class EducationTable
 {
@@ -36,6 +38,36 @@ class EducationTable
                     ->searchable(),
                 TextColumn::make('institute_town')
                     ->searchable(),
+                SelectColumn::make('sort_order')
+                    ->native(false)
+                    ->options(function () {
+                        $existingOrders = Education::whereNotNull('sort_order')
+                            ->orderBy('sort_order')->pluck('sort_order', 'sort_order')->toArray();
+                            
+                            $maxSortOrder = Education::max('sort_order');
+                            $nextSortOrder = $maxSortOrder ? $maxSortOrder + 1 : 1;
+                            
+                            $options = $existingOrders;
+                            $options[$nextSortOrder] = $nextSortOrder;
+
+                            return $options;
+                    })
+                    ->optionsLoadingMessage('Loading Sorting...')
+                    ->noOptionsSearchResultsMessage('No sort order found!')
+                    ->rules(['required'])
+                    ->beforeStateUpdated(function ($record, $state) {
+                        if (!$state || $state == null) {
+                            Notification::make()->danger()
+                                ->title('Error!')
+                                ->body("Cannot remove sort for {$record->degree_type}")->send();
+                            return;
+                        }
+                    })
+                    ->afterStateUpdated(function ($record) {
+                        Notification::make()->success()
+                            ->title('Sort Updated')
+                            ->body("{$record->degree_type} Sorted Successfully")->send();
+                    }),
                 TextColumn::make('start_date')
                     ->date(),
                 TextColumn::make('end_date')

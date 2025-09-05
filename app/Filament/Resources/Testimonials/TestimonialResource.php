@@ -11,6 +11,7 @@ use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Columns\ToggleColumn;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Notifications\Notification;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Actions\ForceDeleteAction;
@@ -92,6 +93,36 @@ class TestimonialResource extends Resource
                     ->copyMessage('Email Copied')
                     ->label('Email address')
                     ->searchable(),
+                SelectColumn::make('sort_order')
+                    ->native(false)
+                    ->options(function () {
+                        $existingOrders = Testimonial::whereNotNull('sort_order')
+                            ->orderBy('sort_order')->pluck('sort_order', 'sort_order')->toArray();
+                            
+                            $maxSortOrder = Testimonial::max('sort_order');
+                            $nextSortOrder = $maxSortOrder ? $maxSortOrder + 1 : 1;
+                            
+                            $options = $existingOrders;
+                            $options[$nextSortOrder] = $nextSortOrder;
+
+                            return $options;
+                    })
+                    ->optionsLoadingMessage('Loading Sorting...')
+                    ->noOptionsSearchResultsMessage('No sort order found!')
+                    ->rules(['required'])
+                    ->beforeStateUpdated(function ($record, $state) {
+                        if (!$state || $state == null) {
+                            Notification::make()->danger()
+                                ->title('Error!')
+                                ->body("Cannot remove sort for {$record->names}")->send();
+                            return;
+                        }
+                    })
+                    ->afterStateUpdated(function ($record) {
+                        Notification::make()->success()
+                            ->title('Sort Updated')
+                            ->body("{$record->names} Sorted Successfully")->send();
+                    }),
                 ImageColumn::make('photo')
                     ->defaultImageUrl(function (Model $model) {
                         return url($model->default_img);

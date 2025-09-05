@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('description');
             $table->string('photo')->nullable();
             $table->string('icon')->nullable();
+            $table->integer('sort_order')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();

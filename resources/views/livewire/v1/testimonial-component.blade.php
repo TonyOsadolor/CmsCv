@@ -19,6 +19,9 @@
         </div> --}}
 
         {{-- User Form Comes here --}}
+        <p class="font-serif tracking-wide text-gray-800 dark:text-gray-100 text-lg text-center">
+            Be rest assured that your information is safe and secured with us!
+        </p>
         <div class="max-w-3xl mx-auto rounded-xl p-8 transition-all duration-300 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3)]">
             <form wire:submit.live="submitReview" id="submitReview" class="mx-auto text-white border-2 border-gray-400 p-6 rounded-md">
                 <div class="grid md:grid-cols-2 md:gap-6">
@@ -56,7 +59,7 @@
                     </div>
                     <div class="relative z-0 w-full mb-5 group">
                         <input type="file" wire:model.live="avatar" id="avatar" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="Select Photo"/>
-                        <label for="floating_avatar" class="peer-focus:font-medium absolute text-sm text-gray-900 dark:text-gray-100 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">(Optional): Upload Photo</label>
+                        <label for="floating_avatar" class="peer-focus:font-medium absolute text-sm text-gray-900 dark:text-gray-100 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">(Optional): Upload a Photo</label>
                         @error('avatar') <span class="error text-red-500">{{ $message }}</span> @enderror
                     </div>
                 </div>

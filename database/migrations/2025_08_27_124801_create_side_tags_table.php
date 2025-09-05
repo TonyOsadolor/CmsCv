@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('about_me_id')->constrained('about_me')->onDelete('cascade');
             $table->string('name');
             $table->string('description')->nullable();
+            $table->integer('sort_order')->nullable();
             $table->boolean('is_active')->default(false);
             $table->timestamps();
             $table->softDeletes();

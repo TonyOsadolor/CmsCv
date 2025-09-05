@@ -84,15 +84,15 @@ class LandPageComponent extends Component
         $github = $this->getGithubPublicProfile();
         $sideTags = SideTag::where('about_me_id', $aboutMe->id)->pluck('name')->implode(', ');
         $testimonials = Testimonial::where('about_me_id', $aboutMe->id)
-            ->where('publish', 1)->orderBy('created_at', 'desc')->get();
+            ->where('publish', 1)->orderBy('sort_order', 'desc')->get();
 
         return view('livewire.v1.land-page-component')->with([
             'aboutMe' => $aboutMe,
-            'experiences' => Experience::active()->where('about_me_id', $aboutMe->id)->orderBy('created_at', 'desc')->get(),
-            'educations' => Education::active()->where('about_me_id', $aboutMe->id)->orderBy('created_at', 'desc')->get(),
-            'services' => Service::active()->where('about_me_id', $aboutMe->id)->orderBy('created_at', 'desc')->get(),
-            'skills' => Skill::active()->where('about_me_id', $aboutMe->id)->orderBy('created_at', 'desc')->get(),
-            'socials' => Social::active()->where('about_me_id', $aboutMe->id)->orderBy('created_at', 'desc')->get(),
+            'experiences' => Experience::active()->where('about_me_id', $aboutMe->id)->orderBy('sort_order', 'desc')->get(),
+            'educations' => Education::active()->where('about_me_id', $aboutMe->id)->orderBy('sort_order', 'desc')->get(),
+            'services' => Service::active()->where('about_me_id', $aboutMe->id)->orderBy('sort_order', 'desc')->get(),
+            'skills' => Skill::active()->where('about_me_id', $aboutMe->id)->orderBy('sort_order', 'desc')->get(),
+            'socials' => Social::active()->where('about_me_id', $aboutMe->id)->orderBy('sort_order', 'desc')->get(),
             'testimonials' => $testimonials,
             'sideTags' => $sideTags,
             'yearOfExperience' => $aboutMe->experience ?? null,

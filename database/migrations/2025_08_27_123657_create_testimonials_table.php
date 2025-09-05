@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email')->unique()->nullable();
             $table->string('photo')->nullable();
             $table->text('review');
+            $table->integer('sort_order')->nullable();
             $table->boolean('is_refree')->default(false);
             $table->boolean('publish')->default(false);
             $table->timestamps();

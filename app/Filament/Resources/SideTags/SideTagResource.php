@@ -8,6 +8,7 @@ use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Tables\Filters\TrashedFilter;
+use Filament\Tables\Columns\SelectColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Forms\Components\TextInput;
@@ -79,6 +80,36 @@ class SideTagResource extends Resource
                         Notification::make()->title($status.' successfully')
                             ->body($msg)
                             ->success()->send();
+                    }),
+                SelectColumn::make('sort_order')
+                    ->native(false)
+                    ->options(function () {
+                        $existingOrders = SideTag::whereNotNull('sort_order')
+                            ->orderBy('sort_order')->pluck('sort_order', 'sort_order')->toArray();
+                            
+                            $maxSortOrder = SideTag::max('sort_order');
+                            $nextSortOrder = $maxSortOrder ? $maxSortOrder + 1 : 1;
+                            
+                            $options = $existingOrders;
+                            $options[$nextSortOrder] = $nextSortOrder;
+
+                            return $options;
+                    })
+                    ->optionsLoadingMessage('Loading Sorting...')
+                    ->noOptionsSearchResultsMessage('No sort order found!')
+                    ->rules(['required'])
+                    ->beforeStateUpdated(function ($record, $state) {
+                        if (!$state || $state == null) {
+                            Notification::make()->danger()
+                                ->title('Error!')
+                                ->body("Cannot remove sort for {$record->name}")->send();
+                            return;
+                        }
+                    })
+                    ->afterStateUpdated(function ($record) {
+                        Notification::make()->success()
+                            ->title('Sort Updated')
+                            ->body("{$record->name} Sorted Successfully")->send();
                     }),
                 TextColumn::make('created_at')
                     ->dateTime()

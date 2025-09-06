@@ -22,4 +22,4 @@ jobs:
           git config git-ftp.url "ftp://${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_USERNAME }}@${{ secrets.FTP_SERVER }}/${{ secrets.PROJECT_PATH }}/"
           git config git-ftp.insecure true # Use this if you have a self-signed certificate
 
-          git pull
+          git ftp push -vvv

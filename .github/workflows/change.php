@@ -27,9 +27,6 @@ jobs:
             .git*
             README.md
             node_modules/
-            .editorconfig
-            .gitattributes
-            .gitignore
 
       - name: 🚨 Trigger Laravel post-deploy hook
         run: 'curl -X POST {{ secrets.PROJECT_URL }} \ -H "Authorization: Bearer ${{ secrets.DEPLOY_TOKEN }}"'

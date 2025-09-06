@@ -1,29 +1,32 @@
-name: 🚀 Deploy to cPanel via SFTP
+name: 🚀 Deploy to cPanel via FTP
 
 on:
   push:
     branches:
-      - main
+      - main  # or your deployment branch
 
 jobs:
-  sftp-deploy:
-    name: 📦 SFTP Deploy
+  ftp-deploy:
+    name: 📦 FTP Deploy
     runs-on: ubuntu-latest
 
     steps:
       - name: 🔄 Checkout Code
         uses: actions/checkout@v3
 
-      - name: 📤 Deploy via SFTP
-        uses: appleboy/scp-action@master
+      - name: 📤 Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          host: ${{ secrets.SFTP_SERVER }}
-          username: ${{ secrets.SFTP_USERNAME }}
-          key: ${{ secrets.SFTP_PRIVATE_KEY }}
-          port: ${{ secrets.SFTP_SERVER_PORT }}
-          source: "./"
-          target: ${{ secrets.PROJECT_PATH }}
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          server-dir: .${{ secrets.PROJECT_PATH }}
+          timeout: 300000 #5 mins in miliseconds
+          exclude: |
+            .git*
+            README.md
+            node_modules/
 
       - name: 🚨 Trigger Laravel post-deploy hook
-        run: 'curl -X POST ${{ secrets.PROJECT_URL }} -H "Authorization: ${{ secrets.DEPLOY_TOKEN }}"'
-
+        run: 'curl -X POST {{ secrets.PROJECT_URL }} \ -H "Authorization: Bearer ${{ secrets.DEPLOY_TOKEN }}"'

@@ -8,7 +8,6 @@ use App\Models\Testimonial;
 use Livewire\WithFileUploads;
 use App\Enums\AppNotificationEnum;
 use App\Traits\AppNotificationTrait;
-use Illuminate\Support\Facades\Mail;
 
 class TestimonialComponent extends Component
 {
@@ -22,6 +21,7 @@ class TestimonialComponent extends Component
     public string $first_name = '';
     public string $email = '';
     public string $phone = '';
+    public string $occupation = '';
     public string $review = '';
     public bool $use_as_referee;
     public $avatar;
@@ -33,6 +33,7 @@ class TestimonialComponent extends Component
             'first_name' => ['required', 'string'],
             'email' => ['required', 'email'],
             'phone' => ['required', 'string'],
+            'occupation' => ['required', 'string'],
             'review' => ['required', 'string'],
             'use_as_referee' => ['nullable', 'boolean'],
             'avatar' => ['nullable', 'mimes:jpg,png,jpeg', 'max:150'],
@@ -50,6 +51,7 @@ class TestimonialComponent extends Component
             $testimonial->update([
                 'names' => $data['first_name'] ." ". $data['last_name'],
                 'phone' => $data['phone'],
+                'occupation' => $data['occupation'],
                 'review' => $data['review'],
                 'is_refree' => $this->use_as_referee ? $this->use_as_referee : null,
                 'photo' => $this->avatar ? $photo : $testimonial->photo,
@@ -70,6 +72,7 @@ class TestimonialComponent extends Component
                 'names' => $data['first_name'] ." ". $data['last_name'],
                 'email' => $data['email'],
                 'phone' => $data['phone'],
+                'occupation' => $data['occupation'],
                 'review' => $data['review'],
                 'is_refree' => $this->use_as_referee ? $this->use_as_referee : null,
                 'photo' => $this->avatar ? $photo : null,

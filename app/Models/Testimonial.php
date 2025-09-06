@@ -5,7 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use App\Traits\SortOrderTrait;
+use App\Mail\ThankYouMail;
 
 class Testimonial extends Model
 {
@@ -24,6 +27,22 @@ class Testimonial extends Model
      * @var array
      */
     protected $appends = ['default_img'];
+
+    /**
+     * Send Appreciation Email
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($model) {
+            try {
+                Mail::to($model->email)->send(new ThankYouMail($model));
+            } catch (\Exception $er) {
+                Log::info('Error sending Appreciation Mail, Error: '.$er->getMessage());
+            }
+        });
+    }
     
     /**
      * Get the About Me Profile

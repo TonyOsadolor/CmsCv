@@ -21,8 +21,10 @@ class ExperienceForm
                 TextInput::make('location')
                     ->required(),
                 DatePicker::make('start_date')
+                    ->native(false)
                     ->required(),
-                DatePicker::make('end_date'),
+                DatePicker::make('end_date')
+                    ->native(false),
                 Toggle::make('till_present')
                     ->required(),
                 Toggle::make('is_active')

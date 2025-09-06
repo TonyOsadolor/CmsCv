@@ -21,7 +21,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./
-          server-dir: .${{ secrets.PROJECT_PATH }}
+          server-dir: "/${{ secrets.PUBLIC_FOLDER }}/${{ secrets.PROJECT_PATH }}/"
           timeout: 300000 #5 mins in miliseconds
           exclude: |
             .git*

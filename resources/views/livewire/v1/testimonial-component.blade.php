@@ -1,5 +1,5 @@
 <div>
-    <div class="mx-auto w-full max-w-[75%] p-8 m-8 rounded-lg border-4 border-purple-500 shadow-md shadow-black/50">
+    <div class="mx-auto w-full max-w-[95%] p-2 m-8 rounded-lg border-4 border-purple-500 shadow-md shadow-black/50">
        <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-4 text-center">
             Hey! Help Me Build My Public Portfolio
         </h1>
@@ -22,8 +22,8 @@
         <p class="font-serif tracking-wide text-gray-800 dark:text-gray-100 text-lg text-center">
             Be rest assured that your information is safe and secured with us!
         </p>
-        <div class="max-w-3xl mx-auto rounded-xl p-8 transition-all duration-300 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3)]">
-            <form wire:submit.live="submitReview" id="submitReview" class="mx-auto text-white border-2 border-gray-400 p-6 rounded-md">
+        <div class="max-w-3x3 mx-auto transition-all duration-300 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3)]">
+            <form wire:submit.live="submitReview" id="submitReview" class="mx-auto text-white border-2 border-gray-400 p-2 rounded-md">
                 <div class="grid md:grid-cols-2 md:gap-6">
                     <div class="relative z-0 w-full mb-5 group">
                         <input type="text" wire:model.live="first_name" id="first_name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " autocomplete="off"/>
@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="grid md:grid-cols-2 md:gap-6">
-                    <div class="flex items-center space-x-2">
+                    <div class="flex items-center space-x-2 mb-5">
                         <input type="checkbox" wire:model.live="use_as_referee" id="use_as_referee" class="hidden peer">
                         <label for="use_as_referee" class="w-8 h-8 rounded-full border-4 cursor-pointer transition-colors duration-300 peer-checked:bg-blue-600 peer-checked:border-blue-600"></label>
                         <label for="use_as_referee" class="text-gray-100 select-none">Can I use you as Referee?</label>

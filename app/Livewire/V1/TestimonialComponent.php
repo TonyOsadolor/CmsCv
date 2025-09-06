@@ -53,7 +53,7 @@ class TestimonialComponent extends Component
                 'phone' => $data['phone'],
                 'occupation' => $data['occupation'],
                 'review' => $data['review'],
-                'is_refree' => $this->use_as_referee ? $this->use_as_referee : null,
+                'is_refree' => $this->use_as_referee ? $this->use_as_referee : false,
                 'photo' => $this->avatar ? $photo : $testimonial->photo,
             ]);
 
@@ -74,7 +74,7 @@ class TestimonialComponent extends Component
                 'phone' => $data['phone'],
                 'occupation' => $data['occupation'],
                 'review' => $data['review'],
-                'is_refree' => $this->use_as_referee ? $this->use_as_referee : null,
+                'is_refree' => $this->use_as_referee ? $this->use_as_referee : false,
                 'photo' => $this->avatar ? $photo : null,
             ]);
             

@@ -16,10 +16,29 @@ jobs:
 
       - name: 📤 Deploy via git-ftp
         run: |
+          # 1. Install git-ftp
+          echo "Installing git-ftp..."
           sudo apt-get update
           sudo apt-get install -y git-ftp
 
-          git config git-ftp.url "ftp://${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_USERNAME }}@${{ secrets.FTP_SERVER }}/${{ secrets.PROJECT_PATH }}/"
-          git config git-ftp.insecure true # Use this if you have a self-signed certificate
+          # 2. Configure git-ftp with your secrets
+          echo "Configuring git-ftp..."
+          git config git-ftp.url "ftp://${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_PASSWORD }}@${{ secrets.FTP_SERVER }}/${{ secrets.PROJECT_PATH }}/"
+          git config git-ftp.insecure true # Optional: Use this if you have a self-signed certificate
 
-          git ftp push -vvv
+          # 3. Deploy the code
+          # Check if this is the first deployment to the server.
+          # If it is, use `git ftp init`. If not, use `git ftp push`.
+          
+          # The `git ftp init` command uploads everything and creates a .git-ftp.json file on the server.
+          # This file is used to track the state for future `git ftp push` commands.
+          if [ -f .git-ftp.json ]; then
+            echo "Starting subsequent deployment..."
+            git ftp push -vvv
+          else
+            echo "Starting initial deployment..."
+            git ftp init -vvv
+          fi
+        env:
+          # Optional: Pass the password as an environment variable for security
+          GIT_FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}

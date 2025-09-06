@@ -22,11 +22,14 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./
           server-dir: "/${{ secrets.PUBLIC_FOLDER }}/${{ secrets.PROJECT_PATH }}/"
-          timeout: 300000 #5 mins in miliseconds
+          timeout: 200000
           exclude: |
             .git*
             README.md
             node_modules/
+            .editorconfig
+            .gitattributes
+            .gitignore
 
       - name: 🚨 Trigger Laravel post-deploy hook
         run: 'curl -X POST {{ secrets.PROJECT_URL }} \ -H "Authorization: Bearer ${{ secrets.DEPLOY_TOKEN }}"'

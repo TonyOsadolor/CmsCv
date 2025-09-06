@@ -28,5 +28,4 @@ jobs:
             node_modules/
 
       - name: 🚨 Trigger Laravel post-deploy hook
-        run: curl -X POST {{ secrets.PROJECT_URL }} \
-              -H "Authorization: Bearer ${{ secrets.DEPLOY_TOKEN }}"
+        run: 'curl -X POST ${{ secrets.PROJECT_URL }} -H "Authorization: ${{ secrets.DEPLOY_TOKEN }}"'

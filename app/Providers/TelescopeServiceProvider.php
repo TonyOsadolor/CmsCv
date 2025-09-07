@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\User;
 use Laravel\Telescope\Telescope;
+use Illuminate\Support\Collection;
 use Laravel\Telescope\IncomingEntry;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Telescope\TelescopeApplicationServiceProvider;
@@ -19,15 +20,18 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
         $this->hideSensitiveRequestDetails();
 
-        $isLocal = $this->app->environment('local');
-
-        Telescope::filter(function (IncomingEntry $entry) use ($isLocal) {
-            return $isLocal ||
-                   $entry->isReportableException() ||
-                   $entry->isFailedRequest() ||
-                   $entry->isFailedJob() ||
-                   $entry->isScheduledTask() ||
-                   $entry->hasMonitoredTag();
+        Telescope::filterBatch(function (Collection $entries) {
+            if ($this->app->environment(config('app.env'))) {
+                return true;
+            }
+            
+            return $entries->contains(function (IncomingEntry $entry) {
+                return $entry->isReportableException() ||
+                    $entry->isFailedJob() ||
+                    $entry->isScheduledTask() ||
+                    $entry->isSlowQuery() ||
+                    $entry->hasMonitoredTag();
+                });
         });
     }
 

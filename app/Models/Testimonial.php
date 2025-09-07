@@ -59,6 +59,6 @@ class Testimonial extends Model
      */
     public function getDefaultImgAttribute()
     {
-        return $this->photo ? $this->photo : config('mine.default_avatar');
+        return $this->photo ? '/public/assets/img/'.$this->photo : config('mine.default_avatar');
     }
 }

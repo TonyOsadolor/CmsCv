@@ -11,5 +11,5 @@ use Illuminate\Support\Facades\Schedule;
 /**
  * Run Cron Commands and Jobs
  */
-Schedule::command('nightwatch:agent --stop-when-empty')
-    ->everyMinute()->withoutOverlapping();
+// run night water every 5 minutes
+Schedule::command('nightwatch:agent')->everyFiveMinutes()->withoutOverlapping();
